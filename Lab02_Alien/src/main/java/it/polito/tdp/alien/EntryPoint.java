@@ -12,6 +12,10 @@ public class EntryPoint extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+    	
+    	AlienDictionary dictionary=new AlienDictionary();
+    	FXMLController controller;
+    	
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
         
         Scene scene = new Scene(root);

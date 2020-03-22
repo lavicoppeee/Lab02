@@ -79,12 +79,13 @@ public class FXMLController {
 		txtResult.appendText("E' stata inserita la nuova parola" + alienWord + "con traduzione " + translated.toString());
 		
 		
-		
-
-
 	}
 
-    @FXML
+	public void setDictionary(AlienDictionary dictionary) {
+		this.dictionary = dictionary;
+	}
+
+	@FXML
     void initialize() {
         assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Scene.fxml'.";
         assert btnReset != null : "fx:id=\"btnReset\" was not injected: check your FXML file 'Scene.fxml'.";
