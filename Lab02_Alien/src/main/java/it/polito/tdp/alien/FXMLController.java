@@ -55,13 +55,14 @@ public class FXMLController {
 		}
 		txtResult.clear();
 
-//		// Controllo formato
-//		String pattern = "[A-Za-z ]*";
-//		if (!word.matches(pattern)) {
-//			txtResult.appendText("Parametro non valido, puoi inserire solo caratteri [A-Za-z]\n");
-//			return;
-//		}
-//		txtResult.clear();
+		// Controllo formato
+		
+		String pattern = "[A-Za-z]*";
+		if (!word.matches(pattern)) {
+			txtResult.appendText("Parametro non valido, puoi inserire solo caratteri [A-Za-z]\n");
+			return;
+		}
+		txtResult.clear();
 
 		String array[] = word.split(" ");
 		System.out.println("Lunghezza array: "+array.length);
