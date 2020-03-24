@@ -2,7 +2,7 @@ package it.polito.tdp.alien;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
+import java.util.StringTokenizer;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,7 +14,7 @@ import javafx.scene.control.TextField;
 public class FXMLController {
 
 	@FXML
-    private AlienDictionary dictionary;
+	private AlienDictionary alienDictionary = new AlienDictionary();
 	
     @FXML
     private ResourceBundle resources;
@@ -38,61 +38,63 @@ public class FXMLController {
     void doReset(ActionEvent event) {
     	txtResult.clear();
     	txtWord.clear();
-    	this.dictionary.reset();
+    	alienDictionary.resetDictionary();
     	
     }
 
-    @FXML
+	@FXML
 	void doTranslate(ActionEvent event) {
 
-		boolean trad = false;
 		String word = txtWord.getText().toLowerCase();
 
 		// controllo che si inseriscano le parole
-		if (word.length() == 0) {
+		if (word.length() == 0 || word == null) {
 			txtResult.appendText("Non posso tradurre se non scrivi niente!");
 			return;
 		}
 		txtResult.clear();
 
-		// Controllo formato
-		
-		String pattern = "[A-Za-z]*";
-		if (!word.matches(pattern)) {
-			txtResult.appendText("Parametro non valido, puoi inserire solo caratteri [A-Za-z]\n");
-			return;
-		}
-		txtResult.clear();
+		StringTokenizer array = new StringTokenizer(word, " ");
 
-		String array[] = word.split(" ");
-		System.out.println("Lunghezza array: "+array.length);
-		
-		if (array.length > 2) {
+		// String array[] = word.split(" ");
+
+		if (!array.hasMoreElements()) {
 			txtResult.appendText("Puoi inserire solo due paramentri\n");
 			return;
 		}
 
-		String alienWord = array[0];
-		String translation = null;
+		String alienWord = array.nextToken();
 
-		if (array.length == 1) {
-			trad = false;
-		} else {
-			trad = true;
-			translation = array[1];
+		if (array.hasMoreTokens()) {
 
-		}
+			String translation = array.nextToken();
 
-		if (trad) {
-			Word result = this.dictionary.translateWord(alienWord);
-			if (result != null) {
-				txtResult.appendText("La traduzione di " + alienWord + " è " + result.getTranslation() + "\n");
-			} else {
-				txtResult.appendText("La traduzione di " + alienWord + " non esiste nel dizonario\n");
+			if (!alienWord.matches("[a-zA-Z]*") || !translation.matches("[a-zA-Z]*")) {
+				txtResult.setText("Inserire solo caratteri alfabetici.");
+				return;
 			}
+
+			// Aggiungo la parola aliena e traduzione nel dizionario
+			alienDictionary.addWord(alienWord, translation);
+
+			txtResult.setText("La parola: \"" + alienWord + "\", con traduzione: \"" + translation
+					+ "\", ed  è stata inserita nel dizionario.");
+
 		} else {
-			this.dictionary.addWord(alienWord, translation);
-			txtResult.appendText("Nuova traduzione aggiunta al dizionario");
+
+			// Controllo che non ci siano caratteri non ammessi
+			if (!alienWord.matches("[a-zA-Z]*")) {
+				txtResult.setText("Inserire solo caratteri alfabetici.");
+				return;
+			}
+
+			String translation = alienDictionary.translateWord(alienWord);
+
+			if (translation != null) {
+				txtResult.setText("La traduzione di " + alienWord + " è " + translation + "\n");
+			} else {
+				txtResult.setText("La traduzione di " + alienWord + " non esiste nel dizonario\n");
+			}
 		}
 
 	}
