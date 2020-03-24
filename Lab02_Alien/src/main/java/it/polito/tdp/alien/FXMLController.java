@@ -45,45 +45,57 @@ public class FXMLController {
     @FXML
 	void doTranslate(ActionEvent event) {
 
+		boolean trad = false;
 		String word = txtWord.getText().toLowerCase();
-
 
 		// controllo che si inseriscano le parole
 		if (word.length() == 0) {
 			txtResult.appendText("Non posso tradurre se non scrivi niente!");
 			return;
 		}
-
 		txtResult.clear();
+
+//		// Controllo formato
+//		String pattern = "[A-Za-z ]*";
+//		if (!word.matches(pattern)) {
+//			txtResult.appendText("Parametro non valido, puoi inserire solo caratteri [A-Za-z]\n");
+//			return;
+//		}
+//		txtResult.clear();
 
 		String array[] = word.split(" ");
+		System.out.println("Lunghezza array: "+array.length);
+		
+		if (array.length > 2) {
+			txtResult.appendText("Puoi inserire solo due paramentri\n");
+			return;
+		}
+
 		String alienWord = array[0];
-		Word translated = null;
+		String translation = null;
 
 		if (array.length == 1) {
-			translated = this.dictionary.translateWord(alienWord);
-			if (translated == null) 
-				txtResult.appendText("Non esiste la traduzione di " + alienWord);
-			 else 
-				txtResult.appendText("La traduzione di " + alienWord + " è " + translated.toString());
-			
+			trad = false;
+		} else {
+			trad = true;
+			translation = array[1];
+
 		}
 
-		txtResult.clear();
-
-		for (int i = 0; i < array.length; i++) {
-			this.dictionary.addWord(alienWord, array[i]);
+		if (trad) {
+			Word result = this.dictionary.translateWord(alienWord);
+			if (result != null) {
+				txtResult.appendText("La traduzione di " + alienWord + " è " + result.getTranslation() + "\n");
+			} else {
+				txtResult.appendText("La traduzione di " + alienWord + " non esiste nel dizonario\n");
+			}
+		} else {
+			this.dictionary.addWord(alienWord, translation);
+			txtResult.appendText("Nuova traduzione aggiunta al dizionario");
 		}
-		
-		translated=this.dictionary.translateWord(alienWord);
-		txtResult.appendText("E' stata inserita la nuova parola" + alienWord + "con traduzione " + translated.toString());
-		
-		
+
 	}
 
-	public void setDictionary(AlienDictionary dictionary) {
-		this.dictionary = dictionary;
-	}
 
 	@FXML
     void initialize() {

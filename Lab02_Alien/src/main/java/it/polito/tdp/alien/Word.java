@@ -1,16 +1,14 @@
 package it.polito.tdp.alien;
 
-import java.util.*;
-
 public class Word {
 
 	private String alienWord;
-	private List<String> translation;
+	private String translation;
 
 	public Word(String alienWord, String translation) {
 		super();
 		this.alienWord = alienWord;
-		this.translation = new ArrayList<String>();
+		this.translation = translation;
 	}
 
 	public String getAlienWord() {
@@ -21,12 +19,12 @@ public class Word {
 		this.alienWord = alienWord;
 	}
 
-	public List<String> getTranslation() {
+	public String getTranslation() {
 		return translation;
 	}
 
 	public void setTranslation(String translation) {
-		this.translation.add(translation);
+		this.translation = translation;
 	}
 
 	public boolean equals(Object obj) {
@@ -35,15 +33,6 @@ public class Word {
 			return true;
 
 		return false;
-	}
-
-	public String toString() {
-		String r = "";
-
-		for (String s : this.translation)
-			r += "\n" + s;
-
-		return r;
 	}
 
 }

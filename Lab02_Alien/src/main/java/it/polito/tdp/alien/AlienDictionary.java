@@ -8,15 +8,16 @@ public class AlienDictionary {
 
 	/**
 	 * Aggiungere la parola e la relativa traduzione al dizionario
-	 * 
-	 * @param aWord
-	 * @param tW
+	 * se non esiste la parola, se no aggiorna la traduzione 
+	 * @param aWord parola aliena
+	 * @param tW traduzione
 	 */
 	public void addWord(String aWord, String tWord) {
 
 		if (this.translateWord(aWord) == null) {
 			Word w = new Word(aWord, tWord);
 			this.words.add(w);
+			w.setTranslation(tWord);
 		} else
 			this.translateWord(aWord).setTranslation(tWord);
 	}
